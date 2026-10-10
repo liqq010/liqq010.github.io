@@ -13,7 +13,7 @@ params:
   env: production
   description: "start sloppy, refine in motion."
   author: liqq
-  defaultTheme: auto
+  defaultTheme: light
   ShowReadingTime: true
   ShowPostNavLinks: true
   ShowBreadCrumbs: true
