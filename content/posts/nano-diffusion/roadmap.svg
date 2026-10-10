@@ -1,0 +1,46 @@
+<svg viewBox="0 0 790 236" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Roadmap: number of sampling steps from 1000 (DDPM) down to 1 (DMD2)" style="width:100%;min-width:600px;height:auto;font-family:inherit">
+<defs><marker id="rm-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--secondary)"/></marker></defs>
+<text x="17" y="22" style="fill:var(--secondary);font-size:13px">network calls per sample</text>
+<line x1="17" y1="36" x2="773" y2="36" style="stroke:var(--secondary);stroke-width:1.5" marker-end="url(#rm-arr)"/>
+<text x="773" y="22" text-anchor="end" style="fill:var(--secondary);font-size:13px">fewer steps →</text>
+<line x1="75.0" y1="36" x2="75.0" y2="54" style="stroke:#4c8bf5;stroke-width:2"/>
+<rect x="17" y="54" width="116" height="128" rx="8" style="fill:var(--entry);stroke:#4c8bf5;stroke-width:1.5"/>
+<text x="75.0" y="88" text-anchor="middle" style="fill:#4c8bf5;font-size:24px;font-weight:700">1000</text>
+<text x="75.0" y="116" text-anchor="middle" style="fill:var(--primary);font-size:13px;font-weight:600">DDPM</text>
+<text x="75.0" y="143" text-anchor="middle" style="fill:var(--secondary);font-size:12px">denoise a little</text>
+<text x="75.0" y="160" text-anchor="middle" style="fill:var(--secondary);font-size:12px">at a time</text>
+<line x1="203.0" y1="36" x2="203.0" y2="54" style="stroke:#4c8bf5;stroke-width:2"/>
+<rect x="145" y="54" width="116" height="128" rx="8" style="fill:var(--entry);stroke:#4c8bf5;stroke-width:1.5"/>
+<text x="203.0" y="88" text-anchor="middle" style="fill:#4c8bf5;font-size:24px;font-weight:700">5–50</text>
+<text x="203.0" y="116" text-anchor="middle" style="fill:var(--primary);font-size:13px;font-weight:600">Fast samplers</text>
+<text x="203.0" y="143" text-anchor="middle" style="fill:var(--secondary);font-size:12px">better ODE solver,</text>
+<text x="203.0" y="160" text-anchor="middle" style="fill:var(--secondary);font-size:12px">no retraining</text>
+<line x1="331.0" y1="36" x2="331.0" y2="54" style="stroke:#4c8bf5;stroke-width:2"/>
+<rect x="273" y="54" width="116" height="128" rx="8" style="fill:var(--entry);stroke:#4c8bf5;stroke-width:1.5"/>
+<text x="331.0" y="88" text-anchor="middle" style="fill:#4c8bf5;font-size:24px;font-weight:700">5–50</text>
+<text x="331.0" y="116" text-anchor="middle" style="fill:var(--primary);font-size:13px;font-weight:600">Rectified Flow</text>
+<text x="331.0" y="143" text-anchor="middle" style="fill:var(--secondary);font-size:12px">straight paths</text>
+<text x="331.0" y="160" text-anchor="middle" style="fill:var(--secondary);font-size:12px">noise → data</text>
+<line x1="459.0" y1="36" x2="459.0" y2="54" style="stroke:#e8590c;stroke-width:2"/>
+<rect x="401" y="54" width="116" height="128" rx="8" style="fill:var(--entry);stroke:#e8590c;stroke-width:1.5"/>
+<text x="459.0" y="88" text-anchor="middle" style="fill:#e8590c;font-size:24px;font-weight:700">1–2</text>
+<text x="459.0" y="116" text-anchor="middle" style="fill:var(--primary);font-size:13px;font-weight:600">Consistency</text>
+<text x="459.0" y="143" text-anchor="middle" style="fill:var(--secondary);font-size:12px">jump straight to</text>
+<text x="459.0" y="160" text-anchor="middle" style="fill:var(--secondary);font-size:12px">the trajectory end</text>
+<line x1="587.0" y1="36" x2="587.0" y2="54" style="stroke:#e8590c;stroke-width:2"/>
+<rect x="529" y="54" width="116" height="128" rx="8" style="fill:var(--entry);stroke:#e8590c;stroke-width:1.5"/>
+<text x="587.0" y="88" text-anchor="middle" style="fill:#e8590c;font-size:24px;font-weight:700">1–2</text>
+<text x="587.0" y="116" text-anchor="middle" style="fill:var(--primary);font-size:13px;font-weight:600">MeanFlow</text>
+<text x="587.0" y="143" text-anchor="middle" style="fill:var(--secondary);font-size:12px">learn the average</text>
+<text x="587.0" y="160" text-anchor="middle" style="fill:var(--secondary);font-size:12px">velocity</text>
+<line x1="715.0" y1="36" x2="715.0" y2="54" style="stroke:#e8590c;stroke-width:2"/>
+<rect x="657" y="54" width="116" height="128" rx="8" style="fill:var(--entry);stroke:#e8590c;stroke-width:1.5"/>
+<text x="715.0" y="88" text-anchor="middle" style="fill:#e8590c;font-size:24px;font-weight:700">1</text>
+<text x="715.0" y="116" text-anchor="middle" style="fill:var(--primary);font-size:13px;font-weight:600">DMD2</text>
+<text x="715.0" y="143" text-anchor="middle" style="fill:var(--secondary);font-size:12px">match teacher's</text>
+<text x="715.0" y="160" text-anchor="middle" style="fill:var(--secondary);font-size:12px">distribution</text>
+<path d="M17,196 v8 H389 v-8" style="fill:none;stroke:#4c8bf5;stroke-width:1.5"/>
+<text x="203.0" y="224" text-anchor="middle" style="fill:#4c8bf5;font-size:13px;font-weight:600">multi-step: solve an ODE at sampling time</text>
+<path d="M401,196 v8 H773 v-8" style="fill:none;stroke:#e8590c;stroke-width:1.5"/>
+<text x="587.0" y="224" text-anchor="middle" style="fill:#e8590c;font-size:13px;font-weight:600">one/few-step: learn to take big jumps</text>
+</svg>

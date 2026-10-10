@@ -1,0 +1,61 @@
+<svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DMD2 structure: the generator, the frozen teacher, the fake score with its discriminator head, and the four losses colored by the parameters they update" style="width:100%;min-width:600px;height:auto;font-family:inherit">
+<defs><marker id="dm-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--secondary)"/></marker></defs>
+<rect x="8" y="148" width="70" height="44" rx="7" style="fill:var(--entry);stroke:var(--secondary);stroke-width:1.6"/>
+<text x="43.0" y="175.0" text-anchor="middle" style="fill:var(--primary);font-size:13.5px;font-weight:600">noise z</text>
+<rect x="102" y="138" width="104" height="64" rx="7" style="fill:var(--entry);stroke:#e8590c;stroke-width:1.6"/>
+<text x="154.0" y="166.0" text-anchor="middle" style="fill:var(--primary);font-size:13.5px;font-weight:600">Generator G</text>
+<text x="154.0" y="183.0" text-anchor="middle" style="fill:var(--secondary);font-size:11.5px">one step</text>
+<rect x="232" y="148" width="84" height="44" rx="7" style="fill:var(--entry);stroke:var(--secondary);stroke-width:1.6"/>
+<text x="274.0" y="175.0" text-anchor="middle" style="fill:var(--primary);font-size:13.5px;font-weight:600">x = G(z)</text>
+<rect x="232" y="268" width="84" height="44" rx="7" style="fill:var(--entry);stroke:var(--secondary);stroke-width:1.6"/>
+<text x="274.0" y="295.0" text-anchor="middle" style="fill:var(--primary);font-size:13.5px;font-weight:600">real x</text>
+<path d="M78,170 H100" style="fill:none;stroke:var(--secondary);stroke-width:1.3" marker-end="url(#dm-a)"/>
+<path d="M206,170 H230" style="fill:none;stroke:var(--secondary);stroke-width:1.3" marker-end="url(#dm-a)"/>
+<rect x="372" y="26" width="156" height="60" rx="7" style="fill:var(--entry);stroke:var(--secondary);stroke-width:1.6;stroke-dasharray:5 3"/>
+<text x="450.0" y="52.0" text-anchor="middle" style="fill:var(--primary);font-size:13.5px;font-weight:600">Teacher</text>
+<text x="450.0" y="69.0" text-anchor="middle" style="fill:var(--secondary);font-size:11.5px">frozen · CFG w = 3</text>
+<rect x="372" y="140" width="156" height="60" rx="7" style="fill:var(--entry);stroke:#4c8bf5;stroke-width:1.6"/>
+<text x="450.0" y="166.0" text-anchor="middle" style="fill:var(--primary);font-size:13.5px;font-weight:600">Fake score</text>
+<text x="450.0" y="183.0" text-anchor="middle" style="fill:var(--secondary);font-size:11.5px">tracks G's outputs</text>
+<rect x="372" y="244" width="156" height="60" rx="7" style="fill:var(--entry);stroke:#4c8bf5;stroke-width:1.6"/>
+<text x="450.0" y="270.0" text-anchor="middle" style="fill:var(--primary);font-size:13.5px;font-weight:600">Disc. head</text>
+<text x="450.0" y="287.0" text-anchor="middle" style="fill:var(--secondary);font-size:11.5px">on fake-score features</text>
+<path d="M316,162 C345,162 345,56 370,56" style="fill:none;stroke:var(--secondary);stroke-width:1.3" marker-end="url(#dm-a)"/>
+<text x="334" y="112" text-anchor="end" style="fill:var(--secondary);font-size:11px">noised to t</text>
+<path d="M316,172 H370" style="fill:none;stroke:var(--secondary);stroke-width:1.3" marker-end="url(#dm-a)"/>
+<path d="M316,290 C345,290 345,190 370,188" style="fill:none;stroke:var(--secondary);stroke-width:1.3" marker-end="url(#dm-a)"/>
+<text x="335" y="244" text-anchor="end" style="fill:var(--secondary);font-size:11px">noised</text>
+<path d="M450,200 V242" style="fill:none;stroke:var(--secondary);stroke-width:1.3" marker-end="url(#dm-a)"/>
+<text x="458" y="225" text-anchor="start" style="fill:var(--secondary);font-size:11px">features</text>
+<rect x="570" y="18" width="142" height="56" rx="7" style="fill:var(--entry);stroke:#e8590c;stroke-width:1.6"/>
+<rect x="570" y="18" width="142" height="56" rx="7" style="fill:#e8590c;fill-opacity:0.12;stroke:none"/>
+<text x="641.0" y="42.0" text-anchor="middle" style="fill:var(--primary);font-size:13.5px;font-weight:600">DM loss</text>
+<text x="641.0" y="59.0" text-anchor="middle" style="fill:var(--secondary);font-size:11.5px">x̂₀ fake − x̂₀ real</text>
+<rect x="570" y="104" width="142" height="56" rx="7" style="fill:var(--entry);stroke:#4c8bf5;stroke-width:1.6"/>
+<rect x="570" y="104" width="142" height="56" rx="7" style="fill:#4c8bf5;fill-opacity:0.12;stroke:none"/>
+<text x="641.0" y="128.0" text-anchor="middle" style="fill:var(--primary);font-size:13.5px;font-weight:600">FM loss</text>
+<text x="641.0" y="145.0" text-anchor="middle" style="fill:var(--secondary);font-size:11.5px">flow matching on x</text>
+<rect x="570" y="214" width="142" height="56" rx="7" style="fill:var(--entry);stroke:#4c8bf5;stroke-width:1.6"/>
+<rect x="570" y="214" width="142" height="56" rx="7" style="fill:#4c8bf5;fill-opacity:0.12;stroke:none"/>
+<text x="641.0" y="238.0" text-anchor="middle" style="fill:var(--primary);font-size:13.5px;font-weight:600">GAN loss (D)</text>
+<text x="641.0" y="255.0" text-anchor="middle" style="fill:var(--secondary);font-size:11.5px">real vs. generated</text>
+<rect x="570" y="296" width="142" height="56" rx="7" style="fill:var(--entry);stroke:#e8590c;stroke-width:1.6"/>
+<rect x="570" y="296" width="142" height="56" rx="7" style="fill:#e8590c;fill-opacity:0.12;stroke:none"/>
+<text x="641.0" y="320.0" text-anchor="middle" style="fill:var(--primary);font-size:13.5px;font-weight:600">GAN loss (G)</text>
+<text x="641.0" y="337.0" text-anchor="middle" style="fill:var(--secondary);font-size:11.5px">fool the discriminator</text>
+<path d="M528,52 H568" style="fill:none;stroke:var(--secondary);stroke-width:1.3" marker-end="url(#dm-a)"/>
+<text x="548" y="46" text-anchor="middle" style="fill:var(--secondary);font-size:11px">x̂₀ real</text>
+<path d="M528,158 C548,158 548,64 568,62" style="fill:none;stroke:var(--secondary);stroke-width:1.3" marker-end="url(#dm-a)"/>
+<text x="540" y="114" text-anchor="end" style="fill:var(--secondary);font-size:11px">x̂₀ fake</text>
+<path d="M528,174 C550,174 550,134 568,132" style="fill:none;stroke:var(--secondary);stroke-width:1.3" marker-end="url(#dm-a)"/>
+<path d="M528,268 C548,268 548,242 568,242" style="fill:none;stroke:var(--secondary);stroke-width:1.3" marker-end="url(#dm-a)"/>
+<path d="M528,282 C548,282 548,322 568,324" style="fill:none;stroke:var(--secondary);stroke-width:1.3" marker-end="url(#dm-a)"/>
+<rect x="8" y="342" width="18" height="12" rx="3" style="fill:var(--entry);stroke:#e8590c;stroke-width:1.6"/>
+<rect x="8" y="342" width="18" height="12" rx="3" style="fill:#e8590c;fill-opacity:0.18;stroke:none"/>
+<text x="32" y="352" style="fill:var(--secondary);font-size:12px">updates G</text>
+<rect x="118" y="342" width="18" height="12" rx="3" style="fill:var(--entry);stroke:#4c8bf5;stroke-width:1.6"/>
+<rect x="118" y="342" width="18" height="12" rx="3" style="fill:#4c8bf5;fill-opacity:0.18;stroke:none"/>
+<text x="142" y="352" style="fill:var(--secondary);font-size:12px">updates fake score + head</text>
+<rect x="330" y="342" width="18" height="12" rx="3" style="fill:var(--entry);stroke:var(--secondary);stroke-width:1.6;stroke-dasharray:4 2"/>
+<text x="354" y="352" style="fill:var(--secondary);font-size:12px">frozen</text>
+</svg>

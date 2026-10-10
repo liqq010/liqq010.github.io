@@ -1,0 +1,7 @@
+# Hugo 构建产物
+public/
+resources/_gen/
+.hugo_build.lock
+
+# Local backups
+*.bak

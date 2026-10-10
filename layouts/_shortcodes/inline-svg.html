@@ -1,0 +1,3 @@
+{{- /* 把页面目录里的 SVG 内联进 HTML，SVG 才能用主题的 CSS 变量跟随亮/暗模式。用法：{{< inline-svg "roadmap.svg" >}}
+       外层容器在窄屏下横向滚动，避免图里的字缩得太小 */ -}}
+{{- with .Page.Resources.Get (.Get 0) }}<div class="svg-scroll">{{ .Content | safeHTML }}</div>{{ else }}{{ errorf "inline-svg: %q not found in %s" (.Get 0) .Page.File.Path }}{{ end -}}

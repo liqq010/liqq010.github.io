@@ -1,0 +1,67 @@
+baseURL: https://liqq010.github.io/
+locale: en-us
+title: liqq
+theme: PaperMod
+
+enableRobotsTXT: true
+buildDrafts: false
+
+minify:
+  disableXML: true
+
+params:
+  env: production
+  description: "start sloppy, refine in motion."
+  author: liqq
+  defaultTheme: auto
+  ShowReadingTime: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowToc: true
+  TocOpen: false
+  math: false  # 文章 front matter 里设 math: true 才加载 KaTeX
+
+  homeInfoParams:
+    Title: "From noise to signal."
+    Content: "start sloppy, refine in motion."
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/liqq010"
+    - name: googlescholar
+      url: "https://scholar.google.com/citations?user=EPY8z0UAAAAJ"
+
+menu:
+  main:
+    - identifier: posts
+      name: Posts
+      url: /posts/
+      weight: 10
+    - identifier: archives
+      name: Archives
+      url: /archives/
+      weight: 20
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 50
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON  # 搜索页需要
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true  # 允许正文里写 HTML（图注、提示框）
+    extensions:
+      passthrough:  # 公式原样交给 KaTeX，避免 _ * 被当成 markdown
+        enable: true
+        delimiters:
+          block: [['\[', '\]'], ['$$', '$$']]
+          inline: [['\(', '\)'], ['$', '$']]
+  highlight:
+    noClasses: false
