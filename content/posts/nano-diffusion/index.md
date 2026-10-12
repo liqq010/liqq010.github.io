@@ -23,6 +23,10 @@ cover:
 
 Knowing how a method works is not the same as understanding it. Understanding means being able to start from first principles and build it, or derive it, yourself. So I implemented diffusion and flow models from scratch, from the original 1000-step DDPM all the way down to 1-step generators, and put them in one repo: **[nano_diffusion](https://github.com/liqq010/nano_diffusion)**, a clean, minimal PyTorch implementation of diffusion and flow models.
 
+<figure>
+  <img src="logo_v2.png" alt="nano_diffusion logo">
+</figure>
+
 ### What's covered 
 
 DDPM (ε / x₀ / v-prediction) with DDIM, DPM-Solver-2, DPM-Solver++(2M) and UniPC samplers; Rectified Flow; Consistency Models (CT and CD); MeanFlow; DMD2; and LoRA fine-tuning on top. One small DiT (9.79M parameters), one dataset (MNIST), one time convention shared by every few-step method, and one evaluation protocol (same seed, same initial noise). The core of each method is a single file of under 200 lines of PyTorch, and every model trains on a single GPU in 30 minutes.

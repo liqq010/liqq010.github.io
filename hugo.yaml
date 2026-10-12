@@ -29,6 +29,8 @@ params:
   socialIcons:
     - name: github
       url: "https://github.com/liqq010"
+    - name: x
+      url: "https://x.com/liqq010"
     - name: googlescholar
       url: "https://scholar.google.com/citations?user=EPY8z0UAAAAJ"
 
