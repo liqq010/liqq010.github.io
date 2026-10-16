@@ -18,7 +18,7 @@ cover:
   <figcaption><strong>The epochal sawtooth.</strong> Training loss of a 3M-parameter byte-level GPT, Adam, shuffled every epoch. The loss creeps up within each epoch and drops at the next.</figcaption>
 </figure>
 
-When a model is trained for many epochs with per-epoch shuffling, the training loss often rises slowly within each epoch and drops abruptly at every epoch boundary. We have seen curves like this before, and they are not a bug; others have reported them too, for example when fine-tuning LLMs, and attributed them to the model memorizing examples after seeing them only once [1]. Prior work [2] studied the pattern systematically and named it the **Epochal Sawtooth Phenomenon (ESP)**. They observed it in BERT pretraining, found it strongest with Adam, and showed that it is sensitive to how the data is sampled, to Adam's $\beta_2$, and to model size.
+When a model is trained for many epochs with per-epoch shuffling, the training loss often rises slowly within each epoch and drops abruptly at every epoch boundary. We have seen curves like this before, and they are not a bug; others have reported similar curves, for example when fine-tuning LLMs, and attributed them to the model memorizing examples after seeing them only once [1]. Prior work [2] studied the pattern systematically and named it the **Epochal Sawtooth Phenomenon (ESP)**. They observed it in BERT pretraining, found it strongest with Adam, and showed that it is sensitive to how the data is sampled, to Adam's $\beta_2$, and to model size.
 
 Their explanation centers on the optimizer: Adam's momentum and its per-coordinate normalization by $\sqrt{v_t}$ make training on other batches slowly raise the loss of a batch not yet visited (Section 2). But it leaves the most striking ablations unexplained: why turning off shuffling weakens the sawtooth, and why sampling with replacement removes it.
 
@@ -148,6 +148,8 @@ The sampling scheme sets the distribution of gaps; the forgetting curve sets how
 ## 6. Discussion
 
 **What the sawtooth tells you.** The sawtooth is not the model degrading within an epoch. It is a sign that the model fits individual training samples, and its amplitude is a rough measure of how much. That is not overfitting by itself; overfitting is a question about held-out data. But in small-data, many-epoch regimes, a sawtooth that suddenly grows is a good reason to look at the validation loss.
+
+**Beyond the gap.** The forgetting curve need not depend on the gap alone. In [1], the data is not reshuffled, so every gap equals $K$, yet the loss still rises late in an epoch: there a learning-rate schedule plays the role that the gap plays here, since samples last seen at a high learning rate are remembered better.
 
 **Getting a smooth curve.** Sampling with replacement removes the sawtooth. Larger batches or stronger data augmentation flatten the forgetting curve and shrink it. Logging the loss on a fixed subset of training data, as in Section 5.2, gives a smooth curve without changing training.
 
