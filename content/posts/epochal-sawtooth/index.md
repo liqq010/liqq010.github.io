@@ -22,7 +22,7 @@ When a model is trained for many epochs with per-epoch shuffling, the training l
 
 Their explanation centers on the optimizer: Adam's momentum and its per-coordinate normalization by $\sqrt{v_t}$ make training on other batches slowly raise the loss of a batch not yet visited (Section 2). But it leaves the most striking ablations unexplained: why turning off shuffling weakens the sawtooth, and why sampling with replacement removes it.
 
-Here we take a different angle, and those unexplained ablations are the clue. Turning off shuffling, sampling with replacement, reversing the order every epoch and changing the batch size all leave the optimizer untouched; they change only the order in which samples are seen. If the order alone can make the sawtooth disappear or amplify it, the key variable should be a quantity determined by the order, not an optimizer statistic. Since neural networks memorize the specific samples they train on and gradually forget them afterwards, a natural candidate is how long ago each sample was last trained on. This leads to a more principled explanation that does not rely on the optimizer: the sawtooth comes from **what** the training loss measures. Each step's loss is computed on samples of different "freshness", and the average freshness, the **expected gap** since the last visit, follows a sawtooth over the epoch. We derive the shape of the curve, predict the outcome of all four sampling ablations, and verify the mechanism with a small GPT.
+Here we take a different angle, and those unexplained ablations are the clue. Turning off shuffling, sampling with replacement, reversing the order every epoch and changing the batch size all leave the optimizer untouched; they change only the order in which samples are seen. If the order alone can make the sawtooth disappear or amplify it, the key variable should be a quantity determined by the order, not an optimizer statistic. Since neural networks memorize the specific samples they train on and gradually forget them afterwards, a natural candidate is how long ago each sample was last trained on. This leads to a more principled explanation that does not rely on the optimizer: the sawtooth comes from **what** the training loss measures. Each step's loss is computed on samples of different "freshness", and the average freshness, the **expected gap** since the last visit, follows a sawtooth over the epoch. We derive the sawtooth from the gap, predict the outcome of all four sampling ablations, and verify the mechanism with a small GPT.
 
 ## 2. Background: the optimizer-based explanation
 
@@ -74,17 +74,17 @@ $$
 \mathbb{E}[\Delta \mid q] = \frac{K+1}{2} + q \approx \frac{K}{2} + q .
 $$
 
-**Within an epoch, the expected gap grows linearly from about $K/2$ to about $3K/2$; at the next epoch it falls back to about $K/2$.** Since $\ell$ is increasing, the training loss rises through the epoch and drops at the boundary. Intuitively, the first batches of an epoch are mostly samples from the second half of the previous epoch, which the model saw recently; the last batches include many samples from the start of the previous epoch, which the model saw long ago.
+**Within an epoch, the expected gap grows linearly from about $K/2$ to about $3K/2$; at the next epoch it falls back to about $K/2$.** Since $\ell$ is increasing, the training loss rises through the epoch and drops at the boundary. Intuitively, where a sample sat in the previous epoch is random and does not depend on where it sits now. What changes is that every sample drawn later in the epoch has spent more steps away since it was last trained on.
 
 Strictly, the logged loss is the average of $\ell(\Delta)$ over the batch, not $\ell$ of the average gap. This makes no difference here: given $q$, $\Delta$ is uniform on $\{q+1, \dots, q+K\}$, so each step shifts the whole distribution of gaps up by one, and the average loss rises with it.
 
-This also covers the first part of the optimizer-based explanation, that the first batches of an epoch overlap with the last batches of the previous one. In terms of gaps, these samples simply have the smallest gaps, and therefore the lowest loss.
+This also accounts for the drop at the start of an epoch without any special overlap between consecutive epochs: at $q = 0$ the gaps are smallest on average, so the loss is lowest.
 
 ## 4. The gap explains the sampling ablations
 
 We now check this perspective against the sampling ablations in [2]. For each scheme, we work out the gap $\Delta$ at step $q$: if it changes with $q$, we predict a sawtooth, otherwise none. We compare each prediction with [2] and with our own runs.
 
-**Setup.** A byte-level GPT (4 layers, width 256, 3.3M parameters) is trained on 4,096 sequences of 128 bytes from TinyStories [4] for 40 epochs, with batch size 32 ($K = 128$) and Adam (learning rate $10^{-3}$, $\beta=(0.9, 0.999)$), a small analogue of the BERT setting in [2]. The sawtooth is measured as the change from the first 10% to the last 10% of steps of each epoch, averaged over epochs 25–34 and 3 seeds. Code: **[liqq010/esp](https://github.com/liqq010/esp)**.
+**Setup.** A byte-level GPT (4 layers, width 256, 3.3M parameters) is trained on 4,096 sequences of 128 bytes from the TinyStories validation split [4], used here as training data, for 40 epochs, with batch size 32 ($K = 128$) and Adam (learning rate $10^{-3}$, $\beta=(0.9, 0.999)$), a small analogue of the BERT setting in [2]. The sawtooth is measured as the change from the first 10% to the last 10% of steps of each epoch, averaged over epochs 25–34 and 3 seeds. Code: **[liqq010/esp](https://github.com/liqq010/esp)**.
 
 The two figures below are aligned column by column: the first shows the gap under each scheme, the second the training loss of the same model under that scheme. Under shuffling, the expected gap grows within each epoch, and the loss rises by **32%** within each epoch.
 
@@ -100,7 +100,7 @@ The two figures below are aligned column by column: the first shows the gap unde
 
 **No shuffling.** Every sample keeps the same position in every epoch, $p = q$, so $\Delta = K$ for all samples at every step. The gap does not depend on $q$, and the sawtooth should disappear. Indeed, [2] finds it nearly gone; the weak residual can come from second-order effects such as samples at different positions having different difficulty. In our runs the loss falls by 6% within each epoch: no sawtooth, only the model improving.
 
-**Sampling with replacement.** Each step draws $B$ samples independently from the whole dataset. The time since a sample was last drawn is geometric with mean $K$, and its distribution is the same at every step. There is no epoch in any meaningful sense, and the sawtooth should disappear, as [2] observes. In our runs the loss falls by 4% within each epoch.
+**Sampling with replacement.** Each step draws $B$ samples independently from the whole dataset. The time since a sample was last drawn is geometric with mean approximately $K$, and its distribution is the same at every step. There is no epoch in any meaningful sense, and the sawtooth should disappear, as [2] observes. In our runs the loss falls by 4% within each epoch.
 
 **Reversing the order every epoch** (order A, then reversed A, then A, …). The sample at step $q$ sat at position $K-1-q$ in the previous epoch, so
 
@@ -108,7 +108,7 @@ $$
 \Delta = (K - (K-1-q)) + q = 1 + 2q .
 $$
 
-The gap now runs from 1 to about $2K$, twice the range under shuffling, and the first samples of an epoch were trained on one step ago. The sawtooth should be about twice as large, consistent with the strong amplification reported in [2]. In our runs the loss rises by **64%** within each epoch, twice the 32% under shuffling.
+The gap now runs from 1 to about $2K$, twice the range under shuffling, and the first samples of an epoch were trained on one step ago. The sawtooth should therefore be stronger; how much stronger depends on the shape of $\ell$. This matches the strong amplification reported in [2]. In our runs the loss rises by **64%** within each epoch, twice the 32% under shuffling.
 
 **Larger batch size.** With a larger batch, an epoch has fewer steps $K$, so the range of gaps, measured in steps, shrinks. In addition, each step fits any individual sample less. Both effects weaken the sawtooth, as [2] reports. In our runs, batch sizes 16, 32, 64 and 128 give rises of 36%, 32%, 27% and 16%. The ordering also holds when runs are compared at the same training loss, so it is not just that larger batches train more slowly.
 
@@ -127,14 +127,14 @@ The sampling ablations test what the gap predicts. The experiments below test th
 
 The assumption of Section 3 can be checked directly. Binning every per-sample loss by its gap gives a smooth, increasing curve, from about 0.12 at $\Delta \approx 10$ to about 0.27 at $\Delta \approx 200$. Splitting by position in the epoch (left) tests whether the gap is really the variable that matters. Samples from the first, middle and last third of the epoch cover different ranges of $\Delta$, but where they overlap they follow nearly the same curve, with residual offsets of about 0.01 against a total range of 0.15. The sawtooth is this curve read along a moving window of gaps.
 
-### 5.2 The model is not getting worse
+### 5.2 The average training loss keeps decreasing
 
 <figure>
   <img src="fixed_subset.png" alt="Training loss on the current batch versus loss on a fixed subset of training samples">
   <figcaption><strong>Batch loss vs. loss on a fixed set of 512 training samples</strong> (shuffling, epochs 30–34). Only the batch loss shows the sawtooth.</figcaption>
 </figure>
 
-If the sawtooth is a measurement effect, a measurement that does not change its samples should not show it. Evaluating the same model on a fixed set of 512 training samples gives a smooth curve that keeps decreasing within each epoch (−7% from the start to the end of an epoch, against +32% for the batch loss). Within an epoch the model improves; only the samples being measured change.
+If the sawtooth comes from which samples are measured, a measurement that does not change its samples should not show it. Evaluating the same model on a fixed set of 512 training samples gives a smooth curve that keeps decreasing within each epoch (−7% from the start to the end of an epoch, against +32% for the batch loss). Forgetting of individual samples is real, and it is what the batch loss picks up as the gaps change; on average, though, the model keeps improving within each epoch.
 
 ### 5.3 Larger models forget more visibly
 
@@ -143,7 +143,7 @@ If the sawtooth is a measurement effect, a measurement that does not change its 
   <figcaption><strong>Sawtooth size over training for three model widths</strong> (0.9M, 3.3M and 12.9M parameters; shaded: range over 3 seeds). It grows as the model starts to memorize, and it is larger for wider models.</figcaption>
 </figure>
 
-The gap fixes the *shape* of the sawtooth; the forgetting curve sets its *size*. A model that retains more about individual samples has a steeper $\ell(\Delta)$ and a bigger sawtooth. Two observations support this. First, the sawtooth grows over training: in the first few epochs the loss falls within each epoch, because general learning dominates, and the rise appears only once the model starts fitting individual sequences. Second, it is larger for larger models: at epoch 15 the rise is +6%, +18% and +23% for widths 128, 256 and 512, consistent with the model-size result in [2].
+The sampling scheme sets the distribution of gaps; the forgetting curve sets how the loss responds to them, and so how large the sawtooth is. A model that retains more about individual samples has a steeper $\ell(\Delta)$ and a bigger sawtooth. Two observations support this. First, the sawtooth grows over training: in the first few epochs the loss falls within each epoch, because general learning dominates, and the rise appears only once the model starts fitting individual sequences. Second, it is larger for larger models: at epoch 15 the rise is +5%, +18% and +23% for widths 128, 256 and 512 (0.05, 0.11 and 0.12 in absolute loss), consistent with the model-size result in [2]. The ordering also holds in absolute terms when widths are compared at the same training loss, so it is not an artifact of measuring the rise relative to a lower baseline.
 
 ## 6. Discussion
 
@@ -151,15 +151,15 @@ The gap fixes the *shape* of the sawtooth; the forgetting curve sets its *size*.
 
 **Getting a smooth curve.** Sampling with replacement removes the sawtooth. Larger batches or stronger data augmentation flatten the forgetting curve and shrink it. Logging the loss on a fixed subset of training data, as in Section 5.2, gives a smooth curve without changing training.
 
-**Where Adam comes in: conjectures.** The optimizer can change the sawtooth only through the steepness of the forgetting curve $\ell(\Delta)$ (Section 5.3). Apart from a quick $\beta_2$ sweep, we have not tested the following; they are plausible readings, not results.
+**Where Adam comes in: conjectures.** Within this picture, the optimizer affects the sawtooth through the forgetting curve $\ell(\Delta)$: its steepness sets the size, and its curvature can change the shape; for example, a curve that saturates at large gaps gives a concave rise, as [2] observes for small $\beta_2$. Apart from a quick $\beta_2$ sweep, we have not tested the following; they are plausible readings, not results.
 
 - *Adam vs. SGD.* Adam divides each coordinate's update by $\sqrt{v_t}$. Coordinates whose gradients are usually small and are driven by only a few samples, such as embeddings of rare tokens or parameters that respond to specific inputs, get their updates amplified. Adam would then fit individual samples more strongly in a single step, giving a steeper forgetting curve.
-- *Smaller $\beta_2$.* $v_t$ averages over roughly $1/(1-\beta_2)$ steps. With a smaller $\beta_2$, $v_t$ is closer to the current $g_t^2$ and the update approaches $\mathrm{sign}(g_t)$, so each step fits the current batch more aggressively and interferes more with other samples, and samples would be memorized and forgotten faster. In our runs, however, this effect is weak: $\beta_2$ from 0.999 down to 0.8 gives rises of 32–35%, and 0.7 gives 28%. The strong $\beta_2$ effect in [2] may depend on the setting.
+- *Smaller $\beta_2$.* $v_t$ averages over roughly $1/(1-\beta_2)$ steps. With a smaller $\beta_2$, $v_t$ follows the current $g_t^2$ more closely, so the normalization reacts faster to each batch; in the limit $\beta_2 \to 0$ the update becomes $m_t/(|g_t|+\epsilon)$, which is sign descent only when $\beta_1 \approx 0$. Each step would then fit the current batch more aggressively and interfere more with other samples, so samples would be memorized and forgotten faster. In our runs, however, this effect is weak: $\beta_2$ from 0.999 down to 0.8 gives rises of 32–35%, and 0.7 gives 29%. The strong $\beta_2$ effect in [2] may depend on the setting.
 - *Larger weight decay.* It limits how far parameters can move to fit an individual sample, which would weaken memorization slightly, matching the small effect seen in [2].
 
 ## 7. Conclusion
 
-The epochal sawtooth comes from what the training loss measures. Each step's loss is taken on samples whose time since the last visit averages $K/2 + q$, a quantity that itself follows a sawtooth over epochs. If a sample's loss grows with that time, this predicts the shape of the curve and the outcome of every sampling ablation, and a small GPT confirms each prediction. The optimizer and the model determine how steep the forgetting curve is; the sampling scheme alone determines the sawtooth's shape.
+The epochal sawtooth comes from what the training loss measures. Each step's loss is taken on samples whose time since the last visit averages $K/2 + q$, a quantity that itself follows a sawtooth over epochs. If a sample's loss grows with that time, this predicts the sawtooth and the outcome of every sampling ablation, and a small GPT confirms each prediction. The sampling scheme determines the distribution of gaps, while the model and optimizer determine how the loss responds to them; together they set the sawtooth's shape and size.
 
 ## Citation
 
