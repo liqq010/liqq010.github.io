@@ -9,6 +9,7 @@ cover:
   image: "sawtooth.png"
   alt: "Training loss with a sawtooth pattern across epochs"
   hidden: true
+  relative: true
 ---
 
 ## 1. A very odd loss curve

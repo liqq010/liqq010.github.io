@@ -6,9 +6,10 @@ math: true
 tags: ["diffusion", "flow matching", "generative models", "pytorch"]
 summary: "Clean, minimal PyTorch implementations of diffusion and flow models, from 1000-step DDPM to 1-step generators, on one backbone with one set of conventions."
 cover:
-  image: "1step_cmp_grid.png"
-  alt: "1-step samples from six methods, same initial noise"
+  image: "logo_v2.png"
+  alt: "nano_diffusion logo"
   hidden: true
+  relative: true
 ---
 
 ## TL;DR
