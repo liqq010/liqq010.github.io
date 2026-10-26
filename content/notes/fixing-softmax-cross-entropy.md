@@ -38,6 +38,8 @@ $$
 a = \operatorname{logsumexp}_{j\ne t}(z_j - z_t)
 $$
 
+where $\operatorname{softplus}(x) = \log(1+e^x)$, $\operatorname{logsumexp}_j(x_j) = \log\sum_j e^{x_j}$, and $\sigma$ is the sigmoid.
+
 The target gradient becomes
 
 $$
@@ -109,6 +111,8 @@ Let
 $$
 s_i = d_i - \operatorname{log1p}\Big(\sum_j p_j \operatorname{expm1}(d_j)\Big)
 $$
+
+where $\operatorname{log1p}(x) = \log(1+x)$ and $\operatorname{expm1}(x) = e^x - 1$ are computed accurately even when $x$ is close to 0.
 
 Then
 
