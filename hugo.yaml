@@ -11,7 +11,7 @@ minify:
 
 params:
   env: production
-  mainSections: ["posts"]  # 首页只列 Posts，Notes 不进首页
+  mainSections: ["posts"]
   description: "start sloppy, refine in motion."
   author: liqq
   defaultTheme: light
@@ -41,10 +41,6 @@ menu:
       name: Posts
       url: /posts/
       weight: 10
-    - identifier: notes
-      name: Notes
-      url: /notes/
-      weight: 15
     - identifier: archives
       name: Archives
       url: /archives/

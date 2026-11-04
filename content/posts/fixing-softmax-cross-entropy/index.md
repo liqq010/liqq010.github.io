@@ -5,6 +5,7 @@ draft: false
 math: true
 tags: ["softmax", "cross-entropy", "numerical stability"]
 summary: "Softmax Collapse and Softmax Cancellation: two floating-point pitfalls in Softmax and Cross-Entropy, and mathematically equivalent fixes."
+aliases: ["/notes/fixing-softmax-cross-entropy/"]
 ShowToc: false
 ---
 
