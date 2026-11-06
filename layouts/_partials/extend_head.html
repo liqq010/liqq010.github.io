@@ -57,3 +57,20 @@
   /* 文章图片一律直角（覆盖主题 .md-content img 的 8px 圆角） */
   .post-content img { border-radius: 0 !important; }
 </style>
+<style>
+  /* About 页时间线：左侧竖线从下往上（箭头朝上），最早的经历在最下面 */
+  .post-content ol.timeline { --tl-x: 6px; --tl-dot: 11px; --tl-dot-y: 0.8em; list-style: none; position: relative; margin: 2.5em 0 0; padding: 14px 0 0; }
+  .post-content ol.timeline::before { content: ""; position: absolute; top: 0; left: calc(var(--tl-x) - 5px); border: 5px solid transparent; border-top: 0; border-bottom: 9px solid var(--tertiary); }
+  .post-content ol.timeline li { position: relative; margin: 0; padding: 0 0 1.8em 30px; line-height: 1.5; }
+  .post-content ol.timeline li:last-child { padding-bottom: 0; }
+  /* 竖线分段画在每一项上，最后一项只画到圆点，不会伸到圆点下方 */
+  .post-content ol.timeline li::before { content: ""; position: absolute; left: calc(var(--tl-x) - 1px); top: 0; bottom: 0; width: 2px; background: var(--tertiary); }
+  .post-content ol.timeline li:first-child::before { top: -6px; }
+  .post-content ol.timeline li:last-child::before { bottom: auto; height: var(--tl-dot-y); }
+  .post-content ol.timeline li::after { content: ""; position: absolute; left: calc(var(--tl-x) - var(--tl-dot) / 2); top: calc(var(--tl-dot-y) - var(--tl-dot) / 2); width: var(--tl-dot); height: var(--tl-dot); box-sizing: border-box; border-radius: 50%; background: var(--theme); border: 2px solid var(--secondary); }
+  .post-content ol.timeline li:first-child::after { background: #e8590c; border-color: #e8590c; }
+  .post-content ol.timeline time { display: block; font-size: 0.85em; color: var(--secondary); font-variant-numeric: tabular-nums; }
+  .post-content ol.timeline .tl-name { font-weight: 600; color: var(--primary); }
+  .post-content ol.timeline .tl-name a { text-decoration: none; }
+  .post-content ol.timeline .tl-desc { font-size: 0.92em; color: var(--content); }
+</style>
