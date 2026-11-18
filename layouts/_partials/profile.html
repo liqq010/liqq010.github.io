@@ -1,0 +1,14 @@
+{{- /* 个人主页：左侧头像 + 姓名，下方正文。主页和 /about/ 共用 */ -}}
+<article class="post-single about-page">
+  <header class="profile-header">
+    {{- with .Params.avatar }}
+    <img class="profile-avatar" src="{{ . | relURL }}" alt="{{ $.Title }}" width="88" height="88">
+    {{- end }}
+    <h1 class="post-title">{{ .Title }}</h1>
+  </header>
+  {{- if .Content }}
+  <div class="post-content md-content">
+    {{- partial "anchored_headings.html" .Content -}}
+  </div>
+  {{- end }}
+</article>

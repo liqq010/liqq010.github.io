@@ -1,6 +1,8 @@
 ---
 title: "Quanquan Li"
 url: "/about/"
+layout: profile
+avatar: "/images/avatar.jpg"
 ShowReadingTime: false
 ShowBreadCrumbs: false
 ShowToc: false
@@ -10,7 +12,7 @@ hideMeta: true
 
 I am a Research Scientist at [Viggle AI](https://viggle.ai/), working on generative models for controllable human motion, including motion generation, audio-driven animation, and motion capture.
 
-Previously, I spent several years at SenseTime working on computer vision, including detection, tracking, pose estimation, knowledge distillation, and efficient models.
+Previously, I spent several years at [SenseTime](https://sensetime.com/en/) working on computer vision, including detection, tracking, pose estimation, knowledge distillation, and efficient models.
 
 I received my master's degree from the University of Waterloo and my bachelor's degree from The Chinese University of Hong Kong.
 
@@ -39,29 +41,4 @@ I received my master's degree from the University of Waterloo and my bachelor's 
   <li><span class="pub-title">Mimicking Very Efficient Network for Object Detection</span><span class="pub-au"><b>Quanquan Li</b>, Shengying Jin, Junjie Yan</span><span class="pub-ven">CVPR 2017</span></li>
   <li><span class="pub-title">POI: Multiple Object Tracking with High Performance Detection and Appearance Feature</span><span class="pub-au">Fengwei Yu, Wenbo Li, <b>Quanquan Li</b>, Yu Liu, Xiaohua Shi, Junjie Yan</span><span class="pub-ven">ECCV Workshops 2016</span></li>
 </ul>
-
-## Experience
-
-<ol class="timeline">
-  <li>
-    <time>2022 – 2026</time>
-    <div class="tl-name"><a href="https://viggle.ai/">Viggle AI</a></div>
-    <div class="tl-desc">Generative Models</div>
-  </li>
-  <li>
-    <time>2021 – 2022</time>
-    <div class="tl-name">University of Waterloo</div>
-    <div class="tl-desc">Master of Electrical and Computer Engineering</div>
-  </li>
-  <li>
-    <time>2015 – 2021</time>
-    <div class="tl-name">SenseTime</div>
-    <div class="tl-desc">Computer Vision</div>
-  </li>
-  <li>
-    <time>2010 – 2015</time>
-    <div class="tl-name">The Chinese University of Hong Kong</div>
-    <div class="tl-desc">Bachelor of Information Engineering</div>
-  </li>
-</ol>
 

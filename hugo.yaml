@@ -41,10 +41,6 @@ menu:
       name: Posts
       url: /posts/
       weight: 10
-    - identifier: archives
-      name: Archives
-      url: /archives/
-      weight: 20
     - identifier: about
       name: About
       url: /about/
