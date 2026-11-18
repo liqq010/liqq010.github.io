@@ -1,0 +1,15 @@
+{{- /* 主页直接显示 About 页面的内容（RSS / JSON 仍由主页输出） */ -}}
+{{- define "main" }}
+{{- with site.GetPage "/about" }}
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">{{ .Title }}</h1>
+  </header>
+  {{- if .Content }}
+  <div class="post-content md-content">
+    {{- partial "anchored_headings.html" .Content -}}
+  </div>
+  {{- end }}
+</article>
+{{- end }}
+{{- end }}{{/* end main */}}
